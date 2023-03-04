@@ -6,4 +6,6 @@ clox: main.c debug.c value.c chunk.c memory.c
 
 clean:
 	rm -f clox
-	find . -name "*.dSYM" -exec rm -rf {} \;
+	if [ -d clox.dSYM ]; then \
+		rm -rf clox.dSYM; \
+	fi
