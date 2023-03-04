@@ -1,15 +1,21 @@
 CC = clang
-CFLAGS = -g
+CFLAGS = -Wall -Wextra -g
 
-clox: main.c debug.c value.c chunk.c memory.c
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+SRCDIR = .
+SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/**/*.c)
+OBJECTS = $(SOURCES:.c=.o)
+
+clox: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f clox
+	rm -f clox $(OBJECTS)
 	if [ -d clox.dSYM ]; then \
 		rm -rf clox.dSYM; \
 	fi
 
 format:
 	find . -name "*.c" -o -name "*.h" -exec clang-format -style=file -i {} \;
-
