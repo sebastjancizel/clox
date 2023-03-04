@@ -9,3 +9,7 @@ clean:
 	if [ -d clox.dSYM ]; then \
 		rm -rf clox.dSYM; \
 	fi
+
+format:
+	find . -name "*.c" -o -name "*.h" -exec clang-format -style=file -i {} \;
+
