@@ -36,6 +36,15 @@ static InterpretResult run()
 #define READ_BYTE() \
     (*vm.ip++) // Note that the ip always points to the next instruction.
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+#define BINARY_OP(op)     \
+    do                    \
+    {                     \
+        double b = pop(); \
+        double a = pop(); \
+        push(a op b);     \
+    } while (             \
+        false) // doing the do/while loop permits multiple statements with a
+               // semi-colon in a macro without running into issues with scope
 
     for (;;)
     {
@@ -66,6 +75,18 @@ static InterpretResult run()
                 push(constant);
                 break;
             }
+            case OP_ADD:
+                BINARY_OP(+);
+                break;
+            case OP_SUBTRACT:
+                BINARY_OP(-);
+                break;
+            case OP_MULTIPLY:
+                BINARY_OP(*);
+                break;
+            case OP_DIVIDE:
+                BINARY_OP(/);
+                break;
             case OP_NEGATE:
                 push(-pop());
                 break;
@@ -81,6 +102,7 @@ static InterpretResult run()
 // Undefine macros to avoid polluting the global namespace.
 #undef READ_BYTE
 #undef READ_CONSTANT
+#undef BINARY_OP
 }
 
 InterpretResult interpret(Chunk* chunk)
