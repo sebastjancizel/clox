@@ -1,22 +1,30 @@
 CC = clang
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Iinclude -Wall -Wextra -Wpedantic -Wconversion -Wshadow -std=c11 -g
 
-SRCDIR = .
-SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/**/*.c)
-OBJECTS = $(SOURCES:.c=.o)
+SRCDIR = src
+BINDIR = bin
+OBJDIR = obj
 
-clox: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LIBS)
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+TARGET = $(BINDIR)/clox
 
-clean:
-	rm -f clox $(OBJECTS)
-	if [ -d clox.dSYM ]; then \
-		rm -rf clox.dSYM; \
-	fi
+all: $(TARGET)
 
+$(TARGET): $(OBJECTS)
+	@mkdir -p $(BINDIR)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+.PHONY: format
 format:
-	find . -name "*.c" -exec clang-format -style=file -i {} \;
-	find . -name "*.h" -exec clang-format -style=file -i {} \;
+	clang-format -i -style=file $(SOURCES) $(HEADERS)
+
+
+.PHONY: clean
+clean:
+	rm -rf $(OBJDIR) $(TARGET)
