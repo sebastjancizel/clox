@@ -18,4 +18,5 @@ clean:
 	fi
 
 format:
-	find . -name "*.c" -o -name "*.h" -exec clang-format -style=file -i {} \;
+	find . -name "*.c" -exec clang-format -style=file -i {} \;
+	find . -name "*.h" -exec clang-format -style=file -i {} \;
