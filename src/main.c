@@ -45,6 +45,7 @@ static char* readFile(const char* path)
         exit(74);
     }
 
+    // we don't know how big the file is a priori, so we need to seek to the end
     fseek(file, 0L, SEEK_END); // seek to end of file; seek means move the
                                // pointer, 0L means the beginning of the file,
                                // SEEK_END means the end of the file
