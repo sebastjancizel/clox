@@ -2,7 +2,7 @@
 
 This repository contains an implementation of the `clox` interpreter, based on the book ["Crafting Interpreters"](http://craftinginterpreters.com) by Robert Nystrom. `clox` is a bytecode virtual machine for the Lox programming language, a small, high-level scripting language designed for learning purposes.
 
-This is a personal project driven by my interest in programming languages and compilers. I am using this project as a stepping stone towards understanding compilers and interpreters.
+This is a personal project driven by my interest in programming languages and compilers. I am using this project as a stepping stone towards understanding compilers and interpreters. It's also my way of furthering my knowledge of C, which means that the code includes (potentially excessive) comments and explanations.
 
 ## Features
 
