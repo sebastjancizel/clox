@@ -1,43 +1,43 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "chunk.h"
 #include "common.h"
 #include "debug.h"
 #include "vm.h"
 
+static void repl()
+{
+    char line[1024];
+    for (;;)
+    {
+        printf("> ");
+        if (!fgets(line, sizeof(line), stdin))
+        {
+            printf("\n");
+            break;
+        }
+    }
+}
+
 int main(int argc, char* argv[])
 {
     initVM();
 
-    Chunk chunk;
-    initChunk(&chunk);
+    if (argc == 1)
+    {
+        repl();
+    }
+    else if (argc == 2)
+    {
+        runFile(argv[1]);
+    }
+    else
+    {
+        fprintf(stderr, "Usage: clox [path]\n");
+    }
 
-    int constant = addConstant(&chunk, 1.2);
-    writeChunk(&chunk, OP_CONSTANT, 123);
-    writeChunk(&chunk, constant, 123);
-
-    constant = addConstant(&chunk, 3.4);
-    writeChunk(&chunk, OP_CONSTANT, 123);
-    writeChunk(&chunk, constant, 123);
-
-    writeChunk(&chunk, OP_ADD, 123);
-
-    constant = addConstant(&chunk, 5.6);
-    writeChunk(&chunk, OP_CONSTANT, 123);
-    writeChunk(&chunk, constant, 123);
-
-    constant = addConstant(&chunk, 5.6);
-    writeChunk(&chunk, OP_CONSTANT, 123);
-    writeChunk(&chunk, constant, 123);
-
-    writeChunk(&chunk, OP_DIVIDE, 123);
-    writeChunk(&chunk, OP_SUBTRACT, 123);
-    writeChunk(&chunk, OP_NEGATE, 123);
-    writeChunk(&chunk, OP_RETURN, 123);
-
-    interpret(&chunk);
     freeVM();
-
-    freeChunk(&chunk);
     return 0;
 }
