@@ -59,7 +59,7 @@ typedef struct
     const char* start;
     int length;
     int line;
-}
+} Token;
 
 void initScanner(const char* source);
 Token scanToken();
