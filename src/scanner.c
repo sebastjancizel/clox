@@ -13,18 +13,6 @@ typedef struct
 
 Scanner scanner; // there is a single global scanner
 
-void initScanner(const char* source)
-{
-    scanner.start = source;
-    scanner.current = source;
-    scanner.line = 1;
-}
-
-static bool isAtEnd()
-{
-    return *scanner.current == '\0';
-}
-
 static Token makeToken(TokenType type)
 {
     Token token;
@@ -45,21 +33,49 @@ static Token errorToken(const char* message)
     return token;
 }
 
+static void skipWhitespace()
+{
+    for (;;)
+    {
+        const c = peek();
+
+        for (;;)
+        {
+            switch (c)
+            {
+                case ' ':
+                case '\r':
+                case '\n':
+                    advance();
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+}
+
+void initScanner(const char* source)
+{
+    scanner.start = source;
+    scanner.current = source;
+    scanner.line = 1;
+}
+
+static bool isAtEnd()
+{
+    return *scanner.current == '\0';
+}
+
 static char advance()
 {
     scanner.current++;
     return scanner.current[-1];
 }
 
-static bool match(char expected)
+static char peek()
 {
-    if (isAtEnd())
-        return false;
-    if (*scanner.current != expected)
-        return false;
-
-    scanner.current++;
-    return true;
+    return *scanner.current;
 }
 
 static bool match(char expected)
@@ -77,6 +93,7 @@ static bool match(char expected)
 
 Token scanToken()
 {
+    skipWhitespace();
     scanner.start = scanner.current;
     if (isAtEnd())
         return makeToken(TOKEN_EOF);
