@@ -45,7 +45,7 @@ static void skipWhitespace()
             {
                 case ' ':
                 case '\r':
-                case '\n':
+                case '\t':
                     advance();
                     break;
                 default:
