@@ -33,11 +33,47 @@ static Token errorToken(const char* message)
     return token;
 }
 
-static void skipWhitespace()
+void initScanner(const char* source)
+{
+    scanner.start = source;
+    scanner.current = source;
+    scanner.line = 1;
+}
+
+static bool isAtEnd(void)
+{
+    return *scanner.current == '\0';
+}
+
+static char advance(void)
+{
+    scanner.current++;
+    return scanner.current[-1];
+}
+
+static char peek(void)
+{
+    return *scanner.current;
+}
+
+static bool match(char expected)
+{
+    if (isAtEnd())
+        return false;
+    if (*scanner.current !=
+        expected) // advance already consumed the current character so
+                  // *scanner.current is the one after the current character
+                  // outside this function
+        return false;
+    scanner.current++;
+    return true;
+}
+
+static void skipWhitespace(void)
 {
     for (;;)
     {
-        const c = peek();
+        const char c = peek();
 
         for (;;)
         {
@@ -59,43 +95,7 @@ static void skipWhitespace()
     }
 }
 
-void initScanner(const char* source)
-{
-    scanner.start = source;
-    scanner.current = source;
-    scanner.line = 1;
-}
-
-static bool isAtEnd()
-{
-    return *scanner.current == '\0';
-}
-
-static char advance()
-{
-    scanner.current++;
-    return scanner.current[-1];
-}
-
-static char peek()
-{
-    return *scanner.current;
-}
-
-static bool match(char expected)
-{
-    if (isAtEnd())
-        return false;
-    if (*scanner.current !=
-        expected) // advance already consumed the current character so
-                  // *scanner.current is the one after the current character
-                  // outside this function
-        return false;
-    scanner.current++;
-    return true;
-}
-
-Token scanToken()
+Token scanToken(void)
 {
     skipWhitespace();
     scanner.start = scanner.current;
