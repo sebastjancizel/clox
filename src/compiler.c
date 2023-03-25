@@ -21,7 +21,7 @@ void compile(const char *source) {
     }
   }
 
-  // printf(
-  //     "%2d '%.*s'\n", token.type, token.length,
-  //     token.start); // *s means print the first n characters of the string
+  //   printf(
+  //       "%2d '%.*s'\n", token.type, token.length,
+  //       token.start); // *s means print the first n characters of the string
 }

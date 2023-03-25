@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -Iinclude -Wall -Wextra -Wpedantic -Wconversion -Wshadow -std=c11 -g
+CFLAGS = -Iinclude -Wall -Wextra -Wconversion -Wshadow -std=c11 -g
 
 SRCDIR = src
 BINDIR = bin
