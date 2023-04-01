@@ -90,6 +90,21 @@ static void skipWhitespace(void) {
   }
 }
 
+static Token string(void) {
+  while (peek() != '"' && !isAtEnd()) {
+    if (peek() == '\n')
+      scanner.line++;
+    advance();
+  }
+
+  if (isAtEnd())
+    return errorToken("Unterminated string.");
+
+  // The closing "
+  advance();
+  return makeToken(TOKEN_STRING);
+}
+
 Token scanToken(void) {
   skipWhitespace();
   scanner.start = scanner.current;
@@ -129,6 +144,8 @@ Token scanToken(void) {
     return makeToken(match('=') ? TOKEN_LESS_EQUAL : TOKEN_LESS);
   case '>':
     return makeToken(match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
+  case '"':
+    return string();
   }
 
   return errorToken("Unexpected character.");
