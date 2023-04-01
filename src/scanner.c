@@ -45,6 +45,12 @@ static char advance(void) {
 
 static char peek(void) { return *scanner.current; }
 
+static char peekNext(void) {
+  if (isAtEnd())
+    return '\0';
+  return scanner.current[1];
+}
+
 static bool match(char expected) {
   if (isAtEnd())
     return false;
@@ -72,6 +78,11 @@ static void skipWhitespace(void) {
         scanner.line++;
         advance();
         break;
+      case '/':
+        if (peekNext() == '/') {
+          while (peek() != '\n' && !isAtEnd())
+            advance();
+        }
       default:
         return;
       }
