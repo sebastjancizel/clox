@@ -36,6 +36,8 @@ void initScanner(const char *source) {
   scanner.line = 1;
 }
 
+static bool isDigit(char c) { return c >= '0' && c <= '9'; }
+
 static bool isAtEnd(void) { return *scanner.current == '\0'; }
 
 static char advance(void) {
@@ -90,6 +92,22 @@ static void skipWhitespace(void) {
   }
 }
 
+static Token number() {
+  while (isDigit(peek()))
+    advance();
+
+  // Look for a fractional part.
+  if (peek() == '.' && isDigit(peekNext())) {
+    // Consume the "."
+    advance();
+
+    while (isDigit(peek()))
+      advance();
+  }
+
+  return makeToken(TOKEN_NUMBER);
+}
+
 static Token string(void) {
   while (peek() != '"' && !isAtEnd()) {
     if (peek() == '\n')
@@ -112,6 +130,8 @@ Token scanToken(void) {
     return makeToken(TOKEN_EOF);
 
   char c = advance();
+  if (isDigit(c))
+    return number();
 
   switch (c) {
   case '(':
