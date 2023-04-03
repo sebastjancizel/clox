@@ -72,28 +72,26 @@ static void skipWhitespace(void) {
   for (;;) {
     const char c = peek();
 
-    for (;;) {
-      switch (c) {
-      case ' ':
-      case '\r':
-      case '\t':
-        advance();
-        break;
-      case '\n':
-        scanner.line++;
-        advance();
-        break;
-      case '/':
-        if (peekNext() == '/') {
-          while (peek() != '\n' && !isAtEnd())
-            advance();
-        } else {
-          return;
-        }
-        break;
-      default:
+    switch (c) {
+    case ' ':
+    case '\r':
+    case '\t':
+      advance();
+      break;
+    case '\n':
+      scanner.line++;
+      advance();
+      break;
+    case '/':
+      if (peekNext() == '/') {
+        while (peek() != '\n' && !isAtEnd())
+          advance();
+      } else {
         return;
       }
+      break;
+    default:
+      return;
     }
   }
 }
