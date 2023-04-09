@@ -3,5 +3,6 @@
 *.o
 bin/
 obj/
+.cache
 
 compile_commands.json
