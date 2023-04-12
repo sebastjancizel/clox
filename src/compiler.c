@@ -91,9 +91,29 @@ static void emitConstant(Value value) {
 
 static void endCompiler(void) { emitReturn(); }
 
+static void grouping(void) {
+  expression();
+  consume(TOKEN_RIGHT_PAREN, "Expect ')' after expression.");
+}
+
 static void number(void) {
   double value = strtod(parser.previous.start, NULL);
   emitConstant(value);
+}
+
+static void unary(void) {
+  TokenType operatorType = parser.previous.type;
+
+  // Compile the operand
+  expression();
+
+  switch (operatorType) {
+  case TOKEN_MINUS:
+    emitByte(OP_NEGATE);
+    break;
+  default:
+    return;
+  }
 }
 
 static void expression(void) {}
