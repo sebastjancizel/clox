@@ -114,7 +114,7 @@ static void emitConstant(Value value) {
 static void endCompiler(void) { emitReturn(); }
 
 static void expression();
-static ParseRule* getRule(TokenType type);
+static ParseRule *getRule(TokenType type);
 static void parsePrecedence(Precedence precedence);
 
 static void binary(void) {
@@ -213,7 +213,7 @@ ParseRule rules[] = {
 
 static void parsePrecedence(Precedence precedence) {
   advance();
-  ParseFn prefixRule = getRule(parser.previous.type) -> prefix;
+  ParseFn prefixRule = getRule(parser.previous.type)->prefix;
   if (prefixRule == NULL) {
     error("Expect expression.");
     return;
@@ -221,9 +221,9 @@ static void parsePrecedence(Precedence precedence) {
 
   prefixRule();
 
-  while (precedence <= getRule(parser.current.type) -> precedence) {
+  while (precedence <= getRule(parser.current.type)->precedence) {
     advance();
-    ParseFn infixRule = getRule(parser.previous.type) -> infix;
+    ParseFn infixRule = getRule(parser.previous.type)->infix;
     infixRule();
   }
 }
