@@ -33,6 +33,14 @@ make
 ./bin/clox
 ```
 
+## Generating compile_commands.json (optional)
+
+To generate a `compile_commands.json` file for use with [clangd](https://clang.llvm.org/extra/clangd/), make sure that you install bear and then run the following command:
+
+```
+bear -- make
+```
+
 ## Resources
 
 - ["Crafting Interpreters" book](http://craftinginterpreters.com) by Robert Nystrom
