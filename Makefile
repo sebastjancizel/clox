@@ -4,9 +4,11 @@ CFLAGS= -Iinclude -Wall -Wextra -Wconversion -Wshadow -std=c11 -g
 SRCDIR = src
 BINDIR = bin
 OBJDIR = obj
+HDRDIR = include
 
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+HEADERS = $(wildcard $(HDRDIR)/*.h)
 
 TARGET = $(BINDIR)/clox
 
